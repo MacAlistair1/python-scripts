@@ -5,7 +5,7 @@ video_type = input('If you want to download playlist type 1 and Enter or type 0:
 link = input('Youtube Video/Playlist URL:')
 
 
-if video_type == "playlist":
+if video_type == 1:
 	playlist = Playlist(link)
 	print('Number of videos in playlist: %s' % len(playlist.video_urls))
 	# Loop through all videos in the playlist and download them
