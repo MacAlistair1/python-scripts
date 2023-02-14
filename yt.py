@@ -11,12 +11,11 @@ if video_type == "playlist":
 	print('Number of videos in playlist: %s' % len(playlist.video_urls))
 	# Loop through all videos in the playlist and download them
 	for video in playlist.videos:
-	    video.streams.filter(progressive=True, file_extension='mp4').order_by(
+	    video.streams.filter(adaptive=True, file_extension='mp4').order_by(
 	    'resolution').desc().first().download()
 
 else:
 	video_download = pytube.YouTube(link)
-	video_download.streams.filter(progressive=True, file_extension='mp4').order_by(
+	video_download.streams.filter(adaptive=True, file_extension='mp4').order_by(
 	    'resolution').desc().first().download()
-
-print('Video Downloaded', link)
+print('Video Downloaded')
