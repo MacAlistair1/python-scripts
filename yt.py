@@ -1,9 +1,8 @@
 import pytube
 from pytube import Playlist
 
-video_type = input('Youtube Video or Playlist:')
-link = input('Youtube Video URL:')
-# video_download.streams.first().download()
+video_type = input('If you want to download playlist type 1 and Enter or type 0:')
+link = input('Youtube Video/Playlist URL:')
 
 
 if video_type == "playlist":
