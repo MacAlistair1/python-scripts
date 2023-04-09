@@ -4,7 +4,8 @@ import json
 
 
 def fetch_data():
-    r = requests.get("https://merolagani.com/LatestMarket.aspx")
+    r = requests.get(
+        "https://www.livepriceofgold.com/nepal-gold-price-per-tola.html")
 
     if r.status_code == 200:
 
@@ -19,7 +20,13 @@ def extact_info(html):
 
     # find market elements
     market_table = soup.find(
-        "div", {"id": "ctl00_ContentPlaceHolder1_LiveTrading"})
+        "div", {"class": "dosya-padding"})
+
+    # update time
+    time = market_table.find("time")
+
+    # print(time.text.strip())
+
     elements = market_table.find_all("tr")[1:]
 
     # iterate market elements
@@ -28,16 +35,9 @@ def extact_info(html):
     for item in elements:
         # extract the information
 
-        title = item.find_all("td")[0].find("a")['title']
         markets.append({
-            "name": title[title.find("(")+1:title.find(")")],
-            "code": item.find_all("td")[0].find("a").text.strip(),
-            "ltp": item.find_all("td")[1].text.strip(),
-            "change_%": item.find_all("td")[2].text.strip(),
-            "open": item.find_all("td")[4].text.strip(),
-            "high": item.find_all("td")[3].text.strip(),
-            "low": item.find_all("td")[5].text.strip(),
-            "qty": item.find_all("td")[6].text.strip()
+            "time": time.text.strip(),
+            "price": item.find_all("td")[3].text.strip()
         })
 
     return markets
@@ -55,5 +55,5 @@ markets = extact_info(html)
 #     print(item, "\n")
 
 # save result in json format
-with open("output/share_market.json", "w") as f:
+with open("output/gold.json", "w") as f:
     f.write(json.dumps(markets, indent=2))
