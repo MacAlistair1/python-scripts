@@ -1,7 +1,7 @@
 from bs4 import BeautifulSoup
 import requests
 import json
-
+import re
 
 def fetch_data():
     r = requests.get("http://noc.org.np/retailprice")
@@ -26,8 +26,15 @@ def extact_info(html):
     for item in elements:
         # extract the information
 
+        date = item.find_all("td")[0].text.strip()
+        
+        start_index = date.index("(") + 1  # Find the index of the opening parenthesis and add 1 to skip it
+        end_index = date.index(")")  # Find the index of the closing parenthesis
+        text = date[start_index:end_index]  # Get the text inside the parentheses
+        text = text.replace(".", "/")  # Replace dots with slashes in the extracted text
+
         items.append({
-            "date": item.find_all("td")[0].text.strip(),
+            "date": text,
             "time": item.find_all("td")[1].text.strip(),
             "petrol": item.find_all("td")[2].text.strip(),
             "diesel": item.find_all("td")[4].text.strip(),
