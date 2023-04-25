@@ -17,6 +17,10 @@ def extact_info(html):
     # parse html content
     soup = BeautifulSoup(html, "html.parser")
 
+    # date
+    date_text = soup.find(
+        "div", {"class": "body-h3"}).text.replace('Showing Exchange Rate for ', '').strip()
+
     # find market elements
     market_table = soup.find_all(
         "table", {"class": "table"})
@@ -33,9 +37,10 @@ def extact_info(html):
         "name": india.find_all("td")[0].find("div", {"class": "ml-2"}).find("span", {"class": "text-capitalize"}
                                                                             ).text.replace('(', '').replace(')', ''),
         "code": india.find_all("td")[0].find("div", {"class": "ml-2"}).text[:4].strip(),
-        "unit": india.find_all("td")[1].text.strip(),
-        "buy": india.find_all("td")[2].text.strip(),
-        "sell": india.find_all("td")[3].text.strip(),
+        "unit": 1,
+        "buy": round(float(india.find_all("td")[2].text.strip())/100, 2),
+        "sell": round(float(india.find_all("td")[3].text.strip())/100, 2),
+        "date": date_text,
     })
 
     for item in elements:
@@ -44,14 +49,25 @@ def extact_info(html):
         raw = item.find_all("td")[0].find("div", {"class": "ml-2"})
         name = raw.find("span", {"class": "text-capitalize"}
                         ).text.replace('(', '').replace(')', '')
-        code = raw.text[:4].strip()
+        code = raw.text[:4].strip().upper()
+
+        unit = int(item.find_all("td")[1].text.strip())
+
+        buy = round(float(item.find_all("td")[2].text.strip()), 2)
+
+        sell = round(float(item.find_all("td")[3].text.strip()),2)
+
+        if (unit == 100):
+            buy = buy/100
+            sell = sell/100
 
         markets.append({
             "name": name,
             "code": code,
-            "unit": item.find_all("td")[1].text.strip(),
-            "buy": item.find_all("td")[2].text.strip(),
-            "sell": item.find_all("td")[3].text.strip(),
+            "unit": 1,
+            "buy": buy,
+            "sell": sell,
+            "date": date_text,
         })
 
     return markets
