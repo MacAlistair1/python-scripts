@@ -8,7 +8,7 @@ OUTPUT_FOLDER=$root"/output"
 
 # Define the start and end times (in 24-hour format)
 START_TIME="11:00"
-END_TIME="21:06"
+END_TIME="15:00"
 
 # Calculate the duration between the start and end times (in seconds)
 START_SECONDS=$(date -d "$START_TIME" +%s)
