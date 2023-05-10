@@ -1,0 +1,19 @@
+export root=$HOME/Documents/scripts
+
+#oil
+55 6 * * * /bin/bash $root/run_oil.sh
+0 12 * * * /bin/bash $root/run_oil.sh
+0 17 * * * /bin/bash $root/run_oil.sh
+
+#share market
+0 11-14 * * * /bin/bash $root/run_share_market.sh
+
+
+# gold
+30 6-23 * * * /usr/bin/python3 $root/gold.py && cd $root/output && git checkout >> $root/logs/gold_"$(date '+%Y-%m-%d')".log 2>&1
+
+# silver
+30 6-23 * * * /usr/bin/python3 $root/silver.py && cd $root/output && git checkout >> $root/logs/silver_"$(date '+%Y-%m-%d')".log 2>&1
+
+#currency
+30 6-23 * * * /usr/bin/python3 $root/currency.py && cd $root/output && git checkout >> $root/logs/currency_"$(date '+%Y-%m-%d')".log 2>&1
