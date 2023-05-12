@@ -1,19 +1,20 @@
 export root=$HOME/Documents/scripts
 
 #oil
-55 6 * * * /bin/bash $root/run_oil.sh
-0 12 * * * /bin/bash $root/run_oil.sh
-0 17 * * * /bin/bash $root/run_oil.sh
+55 6 * * * /bin/bash /home/mac/Documents/scripts/run_oil.sh
+0 12 * * * /bin/bash /home/mac/Documents/scripts/run_oil.sh
+0 17 * * * /bin/bash /home/mac/Documents/scripts/run_oil.sh
+
 
 #share market
-0 11-14 * * * /bin/bash $root/run_share_market.sh
+2 11-15 * * * /bin/bash /home/mac/Documents/scripts/run_share_market.sh
 
 
 # gold
-30 6-23 * * * /usr/bin/python3 $root/gold.py && cd $root/output && git checkout >> $root/logs/gold_"$(date '+%Y-%m-%d')".log 2>&1
+30 6-23 * * * /bin/bash /home/mac/Documents/scripts/run_gold.sh
 
 # silver
-30 6-23 * * * /usr/bin/python3 $root/silver.py && cd $root/output && git checkout >> $root/logs/silver_"$(date '+%Y-%m-%d')".log 2>&1
+30 6-23 * * * /bin/bash /home/mac/Documents/scripts/run_silver.sh
 
 #currency
-30 6-23 * * * /usr/bin/python3 $root/currency.py && cd $root/output && git checkout >> $root/logs/currency_"$(date '+%Y-%m-%d')".log 2>&1
+30 6-23 * * * /bin/bash /home/mac/Documents/scripts/run_currency.sh
