@@ -10,6 +10,22 @@ OUTPUT_FOLDER=$root"/output"
 START_TIME="11:00"
 END_TIME="15:00"
 
+
+folder=$root/logs/$(date +%Y-%m-%d)  # Get today's date in the format YYYY-MM-DD
+
+if [ ! -d "$folder" ]; then
+    mkdir "$folder"
+fi
+
+log_file="$folder/share_market.log"
+
+count=0
+
+if [ -f "$log_file" ]; then
+    count=$(wc -l < "$log_file")
+fi
+
+
 # Calculate the duration between the start and end times (in seconds)
 START_SECONDS=$(date -d "$START_TIME" +%s)
 END_SECONDS=$(date -d "$END_TIME" +%s)
@@ -22,12 +38,13 @@ while true; do
 
     if ((CURRENT_SECONDS >= START_SECONDS && CURRENT_SECONDS <= END_SECONDS)); then
         python3 $SHARE_MARKET_SCRIPT
+        ((count++))
 
         # git checkout to the output folder
         git -C "$OUTPUT_FOLDER" checkout
 
-        echo "Script ran at $(date)" >> $root/logs/"$(date '+%Y-%m-%d')"/share_market.log
-        echo "Script has run $(wc -l < $root/logs/"$(date '+%Y-%m-%d')"/share_market.log) times" >> $root/logs/"$(date '+%Y-%m-%d')"/share_market.log
+        echo "Script ran at $(date)" >> "$log_file"
+        echo "Script has run $count times" >> "$log_file"
 
     fi
 
