@@ -9,7 +9,6 @@ export root=$HOME/Documents/scripts
 #share market
 2 11-15 * * * /bin/bash /home/mac/Documents/scripts/run_share_market.sh
 
-
 # gold
 30 6-23 * * * /bin/bash /home/mac/Documents/scripts/run_gold.sh
 
