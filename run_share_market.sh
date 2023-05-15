@@ -26,8 +26,8 @@ while true; do
         # git checkout to the output folder
         git -C "$OUTPUT_FOLDER" checkout
 
-        echo "Script ran at $(date)" >> $root/logs/share_market_"$(date '+%Y-%m-%d')".log
-        echo "Script has run $(wc -l < $root/logs/share_market_"$(date '+%Y-%m-%d')".log) times" >> $root/logs/share_market_"$(date '+%Y-%m-%d')".log
+        echo "Script ran at $(date)" >> $root/logs/"$(date '+%Y-%m-%d')"/share_market.log
+        echo "Script has run $(wc -l < $root/logs/"$(date '+%Y-%m-%d')"/share_market.log) times" >> $root/logs/"$(date '+%Y-%m-%d')"/share_market.log
 
     fi
 
