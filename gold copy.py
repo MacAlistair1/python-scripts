@@ -34,10 +34,17 @@ def extact_info(html):
 
     for item in elements:
         # extract the information
+        
+        total_price = item.find_all("td")[3].text.strip().replace(",", "")  # Assuming the total price is retrieved as a string
+        percentage = 10.71
+        total_price_numeric = float(total_price)  # Convert the string to a numeric value
+
+        percentage_amount = (percentage / 100) * total_price_numeric  # Calculate the percentage amount
+        new_total_price = total_price_numeric + percentage_amount  # Add the percentage amount to the total
 
         markets.append({
             "time": time.text.strip(),
-            "price": item.find_all("td")[3].text.strip() + 10731.73
+            "price": "{:.2f}".format(new_total_price)
         })
 
     return markets
