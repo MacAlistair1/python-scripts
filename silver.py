@@ -1,12 +1,11 @@
 from bs4 import BeautifulSoup
 import requests
 import json
-import re
 
 
 def fetch_data():
     r = requests.get(
-        "https://www.hamropatro.com/gold")
+        "https://www.livepriceofgold.com/silver-price/nepal.html")
 
     if r.status_code == 200:
 
@@ -21,29 +20,39 @@ def extact_info(html):
 
     # find market elements
     market_table = soup.find(
-        "ul", {"class": "gold-silver"})
-
-    time_table = soup.find(
-        "div", {"class": "column12"})
-
-    time_string = ""
+        "div", {"class": "dt"})
 
     # update time
-    time = time_table.find_all("b")[0]
+    time_div = soup.find(
+        "div", {"class": "pad3"})
+    time = time_div.find("time")
 
-    pattern = r"Last Updated: (.+)"
-    match = re.search(pattern, time.text.strip())
+    elements = market_table.find_all("tr")[1:5]
 
-    if match:
-        extracted_datetime = match.group(1)
-        time_string = extracted_datetime.replace(" - ", " ").strip()
+    # iterate market elements
+    markets = []
 
-    elements = market_table.find_all("li")[5]
+    for (index, item) in enumerate(elements):
+        # extract the information
+        markets.insert(index, item.find_all("td")[2].text.replace(" ", ""))
+        
+        new_total_price = "0"
+        
+        if index == 3:
+            total_price = markets[3]  # Assuming the total price is retrieved as a string
+            percentage = 10.71
+            total_price_numeric = float(total_price)  # Convert the string to a numeric value
 
-    return {
-        "time": time_string,
-        "price": elements.text.strip().replace("Nrs.", "").strip()
-    }
+            percentage_amount = (percentage / 100) * total_price_numeric  # Calculate the percentage amount
+            new_total_price = total_price_numeric + percentage_amount  # Add the percentage amount to the total
+    
+    return ({
+        "time": time.text.strip(),
+        "spotPrice": markets[0],
+        "perGramPrice": markets[1],
+        "perKgPrice": markets[2],
+        "perTolaPrice": "{:.2f}".format(new_total_price)
+    })
 
 
 # fetch html

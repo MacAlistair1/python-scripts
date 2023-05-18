@@ -1,11 +1,11 @@
 from bs4 import BeautifulSoup
 import requests
 import json
-import re
+
 
 def fetch_data():
     r = requests.get(
-        "https://www.hamropatro.com/gold")
+        "https://www.livepriceofgold.com/nepal-gold-price-per-tola.html")
 
     if r.status_code == 200:
 
@@ -20,34 +20,33 @@ def extact_info(html):
 
     # find market elements
     market_table = soup.find(
-        "ul", {"class": "gold-silver"})
-    
-    time_table = soup.find(
-        "div", {"class": "column12"})
-    
-    time_string = ""
+        "div", {"class": "dosya-padding"})
 
     # update time
-    time = time_table.find_all("b")[0]
-    
-    
-    pattern = r"Last Updated: (.+)"
-    match = re.search(pattern, time.text.strip())
+    time = market_table.find("time")
 
-    if match:
-        extracted_datetime = match.group(1)
-        time_string = extracted_datetime.replace(" - ", " ").strip()
+    # print(time.text.strip())
 
-    elements = market_table.find_all("li")[1]
-    
+    elements = market_table.find_all("tr")[1:]
+
+    # iterate market elements
     markets = []
-    
-    
-    markets.append({
-            "time": time_string,
-            "price": elements.text.strip().replace("Nrs.", "").strip()
+
+    for item in elements:
+        # extract the information
+        
+        total_price = item.find_all("td")[3].text.strip().replace(",", "")  # Assuming the total price is retrieved as a string
+        percentage = 10.71
+        total_price_numeric = float(total_price)  # Convert the string to a numeric value
+
+        percentage_amount = (percentage / 100) * total_price_numeric  # Calculate the percentage amount
+        new_total_price = total_price_numeric + percentage_amount  # Add the percentage amount to the total
+
+        markets.append({
+            "time": time.text.strip(),
+            "price": "{:.2f}".format(new_total_price)
         })
-    
+
     return markets
 
 

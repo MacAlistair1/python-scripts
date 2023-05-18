@@ -1,11 +1,12 @@
 from bs4 import BeautifulSoup
 import requests
 import json
+import re
 
 
 def fetch_data():
     r = requests.get(
-        "https://www.livepriceofgold.com/silver-price/nepal.html")
+        "https://www.hamropatro.com/gold")
 
     if r.status_code == 200:
 
@@ -20,29 +21,29 @@ def extact_info(html):
 
     # find market elements
     market_table = soup.find(
-        "div", {"class": "dt"})
+        "ul", {"class": "gold-silver"})
+
+    time_table = soup.find(
+        "div", {"class": "column12"})
+
+    time_string = ""
 
     # update time
-    time_div = soup.find(
-        "div", {"class": "pad3"})
-    time = time_div.find("time")
+    time = time_table.find_all("b")[0]
 
-    elements = market_table.find_all("tr")[1:5]
+    pattern = r"Last Updated: (.+)"
+    match = re.search(pattern, time.text.strip())
 
-    # iterate market elements
-    markets = []
+    if match:
+        extracted_datetime = match.group(1)
+        time_string = extracted_datetime.replace(" - ", " ").strip()
 
-    for (index, item) in enumerate(elements):
-        # extract the information
-        markets.insert(index, item.find_all("td")[2].text.replace(" ", ""))
+    elements = market_table.find_all("li")[5]
 
-    return ({
-        "time": time.text.strip(),
-        "spotPrice": markets[0],
-        "perGramPrice": markets[1],
-        "perKgPrice": markets[2],
-        "perTolaPrice": markets[3],
-    })
+    return {
+        "time": time_string,
+        "price": elements.text.strip().replace("Nrs.", "").strip()
+    }
 
 
 # fetch html
