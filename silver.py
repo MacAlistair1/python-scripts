@@ -20,12 +20,14 @@ def extact_info(html):
 
     # find market elements
     market_table = soup.find(
-        "div", {"class": "dt"})
+        "div", {"class": "cleft"})
 
     # update time
-    time_div = soup.find(
-        "div", {"class": "pad3"})
-    time = time_div.find("time")
+    time_div = soup.find("time")
+    if time_div:
+        time = time_div.get_text().strip()
+    else:
+        time = "Unknown"
 
     elements = market_table.find_all("tr")[1:5]
 
@@ -47,7 +49,7 @@ def extact_info(html):
             new_total_price = total_price_numeric + percentage_amount  # Add the percentage amount to the total
     
     return ({
-        "time": time.text.strip(),
+        "time": time,
         "spotPrice": markets[0],
         "perGramPrice": markets[1],
         "perKgPrice": markets[2],

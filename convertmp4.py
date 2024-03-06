@@ -9,8 +9,7 @@ def MP4ToMP3(mp4, mp3):
     FILETOCONVERT.write_audiofile(mp3)
     FILETOCONVERT.close()
 
-
-base_path = "/home/superx/Documents/scripts"
+base_path = "/Users/nepalivlog/Documents/scripts"
 
 os.chdir(base_path+"/mp4")
 for file in glob.glob("*.mp4"):
