@@ -44,7 +44,7 @@ def extact_info(html):
 
         markets.append({
             "time": time.text.strip(),
-            "price": "{:.2f}".format(new_total_price)
+            "price": "{:.2f}".format(new_total_price+5932.52)
         })
 
     return markets
