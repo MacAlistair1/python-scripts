@@ -18,7 +18,7 @@ def extact_info(html):
     # find market elements
     table = soup.find("table")
 
-    elements = table.find_all("tr")[1:]
+    elements = table.find_all("tr")[2:]
 
     # iterate market elements
     items = []
