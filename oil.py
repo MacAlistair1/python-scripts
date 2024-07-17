@@ -2,13 +2,21 @@ from bs4 import BeautifulSoup
 import requests
 import json
 import re
+from requests.exceptions import RequestException
+import urllib3
+
+
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 def fetch_data():
-    r = requests.get("http://noc.org.np/retailprice")
-    if r.status_code == 200:
-        return r.text
-    else:
-        raise Exception("Error occur while getting information.")
+    try:
+        r = requests.get("http://noc.org.np/retailprice", verify=False)
+        if r.status_code == 200:
+            return r.text
+        else:
+                raise Exception("Error occurred while getting information.")
+    except RequestException as e:
+        print(f"An error occurred: {e}")
 
 
 def extact_info(html):
