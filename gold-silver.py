@@ -21,13 +21,12 @@ def extact_info(html):
     soup = BeautifulSoup(html, "html.parser")
 
     # find market elements
-    market_table = soup.find(
+    market_table = soup.find_all(
         "div", {"class": "rate_buying"})
     
-    rate = (market_table.text.strip().replace("Rs ", "").strip())
     
-    
-    
+    goldPrice = (market_table[0].text.strip().replace("Rs ", "").strip())
+    silverPrice = (market_table[2].text.strip().replace("Rs ", "").strip())
     
     time_table = soup.find(
         "div", {"class": "privacy"})
@@ -41,19 +40,25 @@ def extact_info(html):
         time_string = parts[2].strip()    
         date_object = datetime.strptime(time_string, "%d %b %Y")
         time_string = date_object.strftime("%B %d, %Y")
+        
     
-    return [{
-            "time": time_string,
-            "price": rate
-        }]
+    if goldPrice:
+        with open("output/gold.json", "w") as f:
+            f.write(json.dumps( [{
+                "time": time_string,
+                "price": goldPrice
+                }], indent=2))
+            
+    if silverPrice:
+        with open("output/silver.json", "w") as f:
+            f.write(json.dumps({
+                "time": time_string,
+                "perTolaPrice": silverPrice
+                }, indent=2))
 
 
 # fetch html
 html = fetch_data()
 
 # extract data from html
-markets = extact_info(html)
-
-# save result in json format
-with open("output/gold.json", "w") as f:
-    f.write(json.dumps(markets, indent=2))
+extact_info(html)
