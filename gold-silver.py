@@ -53,7 +53,10 @@ def extact_info(html):
         with open("output/silver.json", "w") as f:
             f.write(json.dumps({
                 "time": time_string,
-                "perTolaPrice": silverPrice
+                "perTolaPrice": silverPrice,
+                "spotPrice" : "",
+                "perGramPrice" : "",
+                "perKgPrice" : ""
                 }, indent=2))
 
 
