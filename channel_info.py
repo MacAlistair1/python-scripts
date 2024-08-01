@@ -1,41 +1,92 @@
 from bs4 import BeautifulSoup
-import requests
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 import json
+import os
+import time
+import math
+import re
+
+# Path to the ChromeDriver executable
+chrome_driver_path = "./chromedriver"
+
+# Set up Chrome options
+chrome_options = Options()
+chrome_options.add_argument("--disable-gpu")  # Disable GPU acceleration
+chrome_options.add_argument("--no-sandbox")  # Bypass OS security model
+chrome_options.add_argument("--headless")  # Run in headless mode
+
+# Initialize the Chrome WebDriver
+service = Service(chrome_driver_path)
+browser = webdriver.Chrome(service=service, options=chrome_options)
+
+# URL of the YouTube channel
+url = "https://www.youtube.com/@nepalivlog"
 
 
-def fetch_data():
-    r = requests.get("https://www.youtube.com/@nepalivlog/about")
 
-    if r.status_code == 200:
+def convert_sci_notation(base, exp):
+        return int(base * (10 ** exp))
 
-        return r.text
-    else:
-        raise Exception("Error occur while getting information.")
+# Open the URL
+browser.get(url)
 
+# Wait for the page to fully load
+# time.sleep(5)  # Adjust the sleep time as needed
 
-def extact_info(html):
-    # parse html content
-    soup = BeautifulSoup(html, "html.parser")
+channel_name = WebDriverWait(browser, 5).until(EC.presence_of_element_located((By.CSS_SELECTOR, ".yt-core-attributed-string.yt-core-attributed-string--white-space-pre-wrap"))).text
 
-    name = soup.find("meta", itemprop="name").get("content")
-    description = soup.find("meta", itemprop="description").get("content")
-    
-    print(name, description)
+button = WebDriverWait(browser, 1).until(EC.element_to_be_clickable((By.XPATH, '//yt-description-preview-view-model')))
+button.click()
 
-    return []
+description = WebDriverWait(browser, 5).until(EC.presence_of_element_located((By.CSS_SELECTOR, '.about-section.style-scope.ytd-about-channel-renderer'))).text
 
 
-# fetch html
-html = fetch_data()
+info = WebDriverWait(browser, 5).until(EC.presence_of_all_elements_located((By.XPATH, "//tr[@class='description-item style-scope ytd-about-channel-renderer']")))
 
-# extract data from html
-markets = extact_info(html)
+url = ""
+subscriber_count = ""
+views = ""
+videos = ""
 
 
-# display result
-# for item in markets:
-#     print(item, "\n")
+for index, value in enumerate(info):
+    if index == 2:
+        url = value.text
+    elif index == 3:
+        subscriber_count = value.text
+    elif index == 4:
+        videos = value.text
+    elif index == 5:
+        views = value.text
 
-# save result in json format
-# with open("output/currency.json", "w") as f:
-#     f.write(json.dumps(markets, indent=2))
+subscriber_count = subscriber_count.replace(" हजार सदस्यहरू", "")
+views = views.replace(" भ्यु", "").replace(",", "")
+videos = videos.replace(",", "").replace(" भिडियोहरू", "")
+
+# Organize data into a dictionary
+channel_data = {
+    'name': channel_name,
+    'url' : url,
+    'subscribers': convert_sci_notation(float(subscriber_count), 3),
+    'description': description,
+    'views' : views,
+    'videos' : videos,
+}
+
+# # Output directory
+output_dir = "output"
+os.makedirs(output_dir, exist_ok=True)
+
+# # Write data to JSON file with proper encoding
+with open(os.path.join(output_dir, "channel_info.json"), "w", encoding='utf-8') as f:
+    json.dump(channel_data, f, indent=2, ensure_ascii=False)
+
+print("Data successfully written to channel_info.json")
+
+# Close the browser
+browser.quit()
