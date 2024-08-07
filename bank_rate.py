@@ -21,7 +21,7 @@ def extact_info(html):
     market_table = soup.find(
         "div", {"class": "bbtable"})
     elements = market_table.find_all("tr")[1:]
-    
+
     # date = market_table.find_all("p")[0].find('strong').text.replace("Updated as on: ", "").strip()
 
     # iterate market elements
@@ -29,7 +29,7 @@ def extact_info(html):
 
     for item in elements:
         # extract the information
-        
+
         markets.append({
             "code": item.find_all("th")[0].find("h3").text.strip(),
             "bank": item.find_all("th")[0].find("span").text.strip(),
@@ -37,7 +37,7 @@ def extact_info(html):
             "fixed": item.find_all("td")[1].text.strip(),
             # 'lastUpdate': date
         })
-        
+
 
     return markets
 
