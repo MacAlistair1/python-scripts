@@ -3,7 +3,7 @@ import requests
 import json
 import re
 from datetime import datetime
-
+from time import gmtime, strftime
 
 def fetch_data():
     r = requests.get(
@@ -40,8 +40,9 @@ def extact_info(html):
         time_string = parts[2].strip()    
         date_object = datetime.strptime(time_string, "%d %b %Y")
         time_string = date_object.strftime("%B %d, %Y")
+        time_string = f'{time_string} {strftime("%H:%M", gmtime())}'
         
-    
+
     if goldPrice:
         with open("output/gold.json", "w") as f:
             f.write(json.dumps( [{
