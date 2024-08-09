@@ -39,8 +39,9 @@ def extact_info(html):
     if len(parts) > 1:
         time_string = parts[2].strip()    
         date_object = datetime.strptime(time_string, "%d %b %Y")
-        time_string = date_object.strftime("%B %d, %Y")
-        time_string = f'{time_string} {strftime("%H:%M", gmtime())}'
+        formatted_date = date_object.strftime("%d %B %Y")
+        current_time = strftime("%H:%M", gmtime())
+        time_string = f'{formatted_date} {current_time}'
         
 
     if goldPrice:
