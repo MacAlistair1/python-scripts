@@ -64,9 +64,9 @@ for index, value in enumerate(info):
     elif index == 5:
         views = value.text
 
-subscriber_count = subscriber_count.replace(" हजार सदस्यहरू", "")
-views = views.replace(" भ्यु", "").replace(",", "")
-videos = videos.replace(",", "").replace(" भिडियोहरू", "")
+subscriber_count = subscriber_count.replace(" हजार सदस्यहरू", "").replace("K subscribers", "")
+views = views.replace(" भ्यु", "").replace(",", "").replace(" views", "")
+videos = videos.replace(",", "").replace(" भिडियोहरू", "").replace(" videos", "")
 
 # Organize data into a dictionary
 channel_data = {
