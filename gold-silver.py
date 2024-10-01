@@ -59,14 +59,14 @@ def extact_info(html):
         with open("output/gold.json", "w") as f:
             f.write(json.dumps( [{
                 "time": time_string,
-                "price": formatAmount(goldPrice)
+                "price": formatAmount(goldPrice).replace(".0", "")
                 }], indent=2))
             
     if silverPrice:
         with open("output/silver.json", "w") as f:
             f.write(json.dumps({
                 "time": time_string,
-                "perTolaPrice": formatAmount(silverPrice),
+                "perTolaPrice": formatAmount(silverPrice).replace(".0", ""),
                 "spotPrice" : "",
                 "perGramPrice" : "",
                 "perKgPrice" : ""
