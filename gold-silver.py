@@ -13,6 +13,8 @@ def fetch_data():
         return r.text
     else:
         raise Exception("Error occur while getting information.")
+    
+
 def formatAmount(number):
     number = float(number)
     number = round(number,2)
@@ -22,7 +24,7 @@ def formatAmount(number):
     r = ",".join([s[x-2:x] for x in range(-3, -len(s), -2)][::-1] + [s[-3:]])
     value = "".join([r] + d)
     if is_negative:
-       value = '-' + value
+       value = f'- {value}'
     return value
 
 def extact_info(html):
