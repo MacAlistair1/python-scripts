@@ -1,6 +1,7 @@
 from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -20,14 +21,11 @@ chrome_options.add_argument("--disable-gpu")  # Disable GPU acceleration
 chrome_options.add_argument("--no-sandbox")  # Bypass OS security model
 chrome_options.add_argument("--headless")  # Run in headless mode
 
-# Initialize the Chrome WebDriver
-service = Service(chrome_driver_path)
+service = Service(ChromeDriverManager().install())
 browser = webdriver.Chrome(service=service, options=chrome_options)
 
 # URL of the YouTube channel
 url = "https://www.youtube.com/@nepalivlog"
-
-
 
 def convert_sci_notation(base, exp):
         return int(base * (10 ** exp))

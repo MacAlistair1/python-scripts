@@ -1,12 +1,14 @@
 from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.by import By
 import json
 import os
 
-# Path to the ChromeDriver executable
-chrome_driver_path = "./chromedriver"
 
 # Set up Chrome options
 chrome_options = Options()
@@ -14,8 +16,7 @@ chrome_options.add_argument("--headless")  # Run in headless mode to avoid openi
 chrome_options.add_argument("--disable-gpu")  # Disable GPU acceleration
 chrome_options.add_argument("--no-sandbox")  # Bypass OS security model
 
-# Initialize the Chrome WebDriver
-service = Service(chrome_driver_path)
+service = Service(ChromeDriverManager().install())
 browser = webdriver.Chrome(service=service, options=chrome_options)
 
 # URL to scrape
@@ -24,6 +25,9 @@ url = "https://nepalipatro.com.np"
 try:
     # Open the URL
     browser.get(url)
+    
+    button = WebDriverWait(browser, 1).until(EC.element_to_be_clickable((By.CSS_SELECTOR, '.btn.btn_popup_sec')))
+    button.click()
 
     # Parse the page source with BeautifulSoup
     soup = BeautifulSoup(browser.page_source, "html.parser")
