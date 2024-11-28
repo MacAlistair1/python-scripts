@@ -15,7 +15,6 @@ chrome_options.add_argument("--headless")  # Run in headless mode to avoid openi
 chrome_options.add_argument("--disable-gpu")  # Disable GPU acceleration
 chrome_options.add_argument("--no-sandbox")  # Bypass OS security model
 
-# Initialize the Chrome WebDriver
 service = Service(ChromeDriverManager().install())
 browser = webdriver.Chrome(service=service, options=chrome_options)
 
@@ -43,17 +42,18 @@ try:
     
     for item in elements:
         
-        
-        img = item.find('td', {'class', 'project-title'}).find('img').get("src")
-        name = item.find_all('td', {'class', 'project-title'})[1].find('div', {'class': 'event-list-name'}).text
-        date = item.find_all('td', {'class', 'project-title'})[1].find('small').text
-        status = item.find('td', {'class', 'project-status'}).find('i', {'class': 'event-list-div'}).text
-        
         try:
+            name = item.find_all('td', {'class', 'project-title'})[1].find('div', {'class': 'event-list-name'}).text
+            date = item.find_all('td', {'class', 'project-title'})[1].find('small').text
+            status = item.find('td', {'class', 'project-status'}).find('i', {'class': 'event-list-div'}).text
+            img = item.find('td', {'class', 'project-title'}).find('img').get("src")
             left = item.find('td', {'class', 'project-status'}).find('small').text
         except Exception as e:
+            name = item.find_all('td', {'class', 'project-title'})[1].find('div', {'class': 'event-list-name'}).text
+            date = item.find_all('td', {'class', 'project-title'})[1].find('small').text
+            status = item.find('td', {'class', 'project-status'}).find('i', {'class': 'event-list-div'}).text
+            img = ""
             left = ""
-        
 
         data.append({
             "name": name,
