@@ -12,46 +12,35 @@ def fetch_data():
     else:
         raise Exception("Error occur while getting information.")
 
-
 def extact_info(html):
-    # parse html content
+    
     soup = BeautifulSoup(html, "html.parser")
 
     # find market elements
-    market_table = soup.find(
-        "div", {"id": "ez-toc-container"})
+    singer_list = soup.find_all(
+        "h2", {"class": "wp-block-heading"})
 
-    
-    elements = market_table.find_all("ul")[0].find_all('li')
+    singers = []
 
-    # iterate market elements
-    markets = []
-
-    for (index, item) in enumerate(elements):
+    for (index, item) in enumerate(singer_list):
         # extract the information
         
-        markets.append({
-            "name": item.find("a").text[3:].strip(),
+        singers.append({
+            "name": item.text.strip(),
         })
         
-        if(index == 9):
+        if index ==9:
             break
-        
 
-    return markets
+    return singers
 
 
 # fetch html
 html = fetch_data()
 
 # extract data from html
-markets = extact_info(html)
-
-
-# display result
-# for item in markets:
-#     print(item, "\n")
+singers = extact_info(html)
 
 # save result in json format
 with open("output/top_singer.json", "w") as f:
-    f.write(json.dumps(markets, indent=2))
+    f.write(json.dumps(singers, indent=2))

@@ -52,7 +52,7 @@ try:
             name = item.find_all('td', {'class', 'project-title'})[1].find('div', {'class': 'event-list-name'}).text
             date = item.find_all('td', {'class', 'project-title'})[1].find('small').text
             status = item.find('td', {'class', 'project-status'}).find('i', {'class': 'event-list-div'}).text
-            img = ""
+            img = "https://nepalipulse.jeevenlamichhane.com.np/assets/NepaliPulse.png"
             left = ""
 
         data.append({
