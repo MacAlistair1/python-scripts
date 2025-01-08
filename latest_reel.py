@@ -31,7 +31,7 @@ reel_element = WebDriverWait(browser, 40).until(
 
 # Extract the href link from the <a> element
 reel_href_full = reel_element.get_attribute("href")
-reel_id = reel_href_full.split('/')[4]
+reel_id = reel_href_full.split('/')[3]
 reel_href = f"https://www.instagram.com/reel/{reel_id}"
 
 # Grab the content inside the nested <div> and extract the background-image URL
