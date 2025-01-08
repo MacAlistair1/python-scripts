@@ -29,24 +29,32 @@ url = "https://www.youtube.com/@nepalivlog/videos"
 
 browser.get(url)
 
-info = WebDriverWait(browser, 5).until(
-    EC.presence_of_element_located((By.XPATH, "(//a[@class='yt-simple-endpoint focus-on-expand style-scope ytd-rich-grid-media'])[1]"))
+video = WebDriverWait(browser, 5).until(
+    EC.presence_of_element_located((By.XPATH, "(//a[@id='video-title-link'])[1]"))
 )
 
 videoId = ""
+title = ""
 
-if info:
-    videoId = info.get_attribute('href').split('=', 1)[1].strip()
+if video:
+    videoId = video.get_attribute('href').split('=', 1)[1].strip()
+    title = video.get_attribute('title').strip()
+
+
+data = {
+    "videoId" : videoId,
+    "title" : title
+}
 
 # # Output directory
 output_dir = "output"
 os.makedirs(output_dir, exist_ok=True)
 
-# # Write data to text file with proper encoding
-with open(os.path.join(output_dir, "latest_yt_video.txt"), "w", encoding="utf-8") as f:
-    f.write(videoId)
+# # Write data to json file with proper encoding
+with open(os.path.join(output_dir, "latest_yt_video.json"), "w", encoding='utf-8') as f:
+    json.dump(data, f, indent=2, ensure_ascii=False)
 
-print("Data successfully written to latest_yt_video.txt")
+print("Data successfully written to latest_yt_video.json")
 
 # Close the browser
 browser.quit()
