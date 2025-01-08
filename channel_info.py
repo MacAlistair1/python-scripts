@@ -12,9 +12,6 @@ import time
 import math
 import re
 
-# Path to the ChromeDriver executable
-chrome_driver_path = "./chromedriver"
-
 # Set up Chrome options
 chrome_options = Options()
 chrome_options.add_argument("--disable-gpu")  # Disable GPU acceleration
