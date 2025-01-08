@@ -9,12 +9,14 @@ import os
 import json
 import base64
 import requests
+import time
+
 
 # Set up Chrome options
 chrome_options = Options()
-chrome_options.add_argument("--headless")  # Run in headless mode to avoid opening a browser window
-chrome_options.add_argument("--disable-gpu")  # Disable GPU acceleration
-chrome_options.add_argument("--no-sandbox")  # Bypass OS security model
+# chrome_options.add_argument("--headless")  # Run in headless mode to avoid opening a browser window
+# chrome_options.add_argument("--disable-gpu")  # Disable GPU acceleration
+# chrome_options.add_argument("--no-sandbox")  # Bypass OS security model
 
 service = Service(ChromeDriverManager().install())
 browser = webdriver.Chrome(service=service, options=chrome_options)
@@ -24,6 +26,8 @@ url = "https://www.instagram.com/_nepalivlog/reels/"
 
 browser.get(url)
 
+time.sleep(10)
+
 # Wait until the <a> element with href containing '/_nepalivlog/reel/' is found
 reel_element = WebDriverWait(browser, 40).until(
     EC.presence_of_element_located((By.XPATH, "(//a[contains(@href, '/_nepalivlog/reel/')])[1]"))
@@ -31,7 +35,7 @@ reel_element = WebDriverWait(browser, 40).until(
 
 # Extract the href link from the <a> element
 reel_href_full = reel_element.get_attribute("href")
-reel_id = reel_href_full.split('/')[3]
+reel_id = reel_href_full.split('/')[5]
 reel_href = f"https://www.instagram.com/reel/{reel_id}"
 
 # Grab the content inside the nested <div> and extract the background-image URL
