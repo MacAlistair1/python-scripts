@@ -7,6 +7,8 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import os
 import json
+import base64
+import requests
 
 # Set up Chrome options
 chrome_options = Options()
@@ -28,7 +30,9 @@ reel_element = WebDriverWait(browser, 40).until(
 )
 
 # Extract the href link from the <a> element
-reel_href = reel_element.get_attribute("href")
+reel_href_full = reel_element.get_attribute("href")
+reel_id = reel_href_full.split('/')[4]
+reel_href = f"https://www.instagram.com/reel/{reel_id}"
 
 # Grab the content inside the nested <div> and extract the background-image URL
 div_element = reel_element.find_element(By.XPATH, ".//div")
@@ -37,9 +41,19 @@ background_image_url = div_element.value_of_css_property("background-image")
 # Clean up the background image URL to remove the `url()` wrapper
 background_image_url = background_image_url.replace('url("', '').replace('")', '')
 
+# Download the image from the background_image_url
+response = requests.get(background_image_url)
+
+# Check if the request was successful (status code 200)
+if response.status_code == 200:
+    # Convert the image to Base64
+    image_base64 = base64.b64encode(response.content).decode('utf-8')
+else:
+    image_base64 = "Failed to download the image."
+
 data = {
     "url": reel_href,
-    "image": background_image_url
+    "image": f"data:image/jpeg;base64,{image_base64}"
 }
 
 # Output directory
