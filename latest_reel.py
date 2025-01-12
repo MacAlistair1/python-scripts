@@ -22,15 +22,15 @@ service = Service(ChromeDriverManager().install())
 browser = webdriver.Chrome(service=service, options=chrome_options)
 
 # URL of the Instagram Reel
-url = "https://www.instagram.com/_nepalivlog/reels/"
+url = "https://www.instagram.com/nepalivlog.mp4/reels/"
 
 browser.get(url)
 
 time.sleep(10)
 
-# Wait until the <a> element with href containing '/_nepalivlog/reel/' is found
+# Wait until the <a> element with href containing '/nepalivlog.mp4/reel/' is found
 reel_element = WebDriverWait(browser, 40).until(
-    EC.presence_of_element_located((By.XPATH, "(//a[contains(@href, '/_nepalivlog/reel/')])[1]"))
+    EC.presence_of_element_located((By.XPATH, "(//a[contains(@href, '/nepalivlog.mp4/reel/')])[1]"))
 )
 
 # Extract the href link from the <a> element
