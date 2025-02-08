@@ -25,8 +25,11 @@ try:
     # Open the URL
     browser.get(url)
     
-    button = WebDriverWait(browser, 1).until(EC.element_to_be_clickable((By.CSS_SELECTOR, '.btn.btn_popup_sec')))
-    button.click()
+    try:
+        button = WebDriverWait(browser, 1).until(EC.element_to_be_clickable((By.CSS_SELECTOR, '.btn.btn_popup_sec')))
+        button.click()
+    except Exception as e:
+        print("An error occurred on button click")
 
     # Parse the page source with BeautifulSoup
     soup = BeautifulSoup(browser.page_source, "html.parser")
