@@ -26,7 +26,7 @@ def extact_info(html):
     # find market elements
     table = soup.find("table")
 
-    elements = table.find_all("tr")[1:]
+    elements = table.find_all("tr")[6:]
 
     # iterate market elements
     items = []
@@ -36,10 +36,10 @@ def extact_info(html):
 
         date = item.find_all("td")[0].text.strip()
         
-        # start_index = date.index("(") + 1  # Find the index of the opening parenthesis and add 1 to skip it
-        # end_index = date.index(")")  # Find the index of the closing parenthesis
-        # text = date[start_index:end_index]  # Get the text inside the parentheses
-        text = date.split('(', 1)[0].strip()
+        start_index = date.index("(") + 1  # Find the index of the opening parenthesis and add 1 to skip it
+        end_index = date.index(")")  # Find the index of the closing parenthesis
+        text = date[start_index:end_index]  # Get the text inside the parentheses
+        # text = date.split('(', 1)[0].strip()
         
         text = text.replace(".", "/")  # Replace dots with slashes in the extracted text
 
