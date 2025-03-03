@@ -43,7 +43,7 @@ try:
 
     mediaBox = box.find('div', {'class': "media-body"})
     nepYearMonth = mediaBox.find("h3").text.strip()
-    nepOthers = mediaBox.findAll("p")
+    nepOthers = mediaBox.find_all("p")
     nepSambat = nepOthers[0].text.strip().replace(" ", "")
     nepTithi = nepOthers[1].text.strip()
 
@@ -55,7 +55,7 @@ try:
         nepEvent = ""
 
     sunBox = box.find("div", {"class": "col-12 px-0 mt-2"})
-    sunSpans = sunBox.findAll("span")
+    sunSpans = sunBox.find_all("span")
     sunrise = sunSpans[0].text.strip()
     sunset = sunSpans[1].text.strip()
 
