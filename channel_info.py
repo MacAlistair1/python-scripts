@@ -52,13 +52,12 @@ videos = ""
 for index, value in enumerate(info):
     if index == 2:
         url = value.text
-    elif index == 3:
-        subscriber_count = value.text
-    elif index == 4:
-        videos = value.text
     elif index == 5:
+        subscriber_count = value.text
+    elif index == 6:
+        videos = value.text
+    elif index == 7:
         views = value.text
-
 subscriber_count = subscriber_count.replace(" हजार सदस्यहरू", "").replace("K subscribers", "")
 views = views.replace(" भ्यु", "").replace(",", "").replace(" views", "")
 videos = videos.replace(",", "").replace(" भिडियोहरू", "").replace(" videos", "")
@@ -84,4 +83,4 @@ with open(os.path.join(output_dir, "channel_info.json"), "w", encoding='utf-8') 
 print("Data successfully written to channel_info.json")
 
 # Close the browser
-browser.quit()
+# browser.quit()
