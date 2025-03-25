@@ -17,3 +17,8 @@ export root=$HOME/Documents/scripts
 
 #currency
 30 6-23 * * * /bin/bash $root/Documents/scripts/run_currency.sh
+
+
+
+#alias run on 20th and 50th minutes in between 9am to 5pm
+20,50 9-17 * * * . $HOME/.zshrc && cd /home/mac/Documents/scripts/ && scrap >> /home/mac/Documents/scripts/logs/scrap.log 2>&1
