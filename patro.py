@@ -1,3 +1,5 @@
+#!/home4/clickeat/virtualenv/scripts/3.12/bin/python
+
 from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
