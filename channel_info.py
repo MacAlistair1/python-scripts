@@ -14,6 +14,7 @@ import re
 
 # Set up Chrome options
 chrome_options = Options()
+chrome_options.binary_location = "/home4/clickeat/bin/chromium/chrome"
 # chrome_options.add_argument("--disable-gpu")  # Disable GPU acceleration
 chrome_options.add_argument("--no-sandbox")  # Bypass OS security model
 chrome_options.add_argument("--headless")  # Run in headless mode
