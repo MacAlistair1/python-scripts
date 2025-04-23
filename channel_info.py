@@ -14,7 +14,7 @@ import re
 
 # Set up Chrome options
 chrome_options = Options()
-chrome_options.add_argument("--disable-gpu")  # Disable GPU acceleration
+# chrome_options.add_argument("--disable-gpu")  # Disable GPU acceleration
 chrome_options.add_argument("--no-sandbox")  # Bypass OS security model
 chrome_options.add_argument("--headless")  # Run in headless mode
 
