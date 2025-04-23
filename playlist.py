@@ -4,7 +4,7 @@ import yt_dlp
 # Input the playlist or video URL
 video_type = input('If you want to download a playlist, type 1 and press Enter, or type 0:')
 link = input('YouTube Video/Playlist URL:')
-start_index = 323  # Set this to 149 to start from the 150th video
+start_index = 128  # Set this to 149 to start from the 150th video
 
 def get_video_urls_from_playlist(playlist_url):
     ydl_opts = {
@@ -57,8 +57,8 @@ if video_type == "1":
         os.makedirs(output_dir, exist_ok=True)
 
         for index, video_url in enumerate(video_urls):
-            # if index < start_index:
-            #     continue  # Skip videos until reaching the start index
+            if index < start_index:
+                continue  # Skip videos until reaching the start index
 
             print(f"Downloading video {index + 1}...")
             download_audio(video_url, output_dir)
