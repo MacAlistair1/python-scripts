@@ -42,7 +42,7 @@ try:
     nepDay = circleToday.find('span').text.strip().replace(" ", "")
 
     mediaBox = box.find('div', {'class': "media-body"})
-    nepYearMonth = mediaBox.find("h3").text.strip()
+    nepYearMonth = mediaBox.find("h1").text.strip()
     nepOthers = mediaBox.find_all("p")
     nepSambat = nepOthers[0].text.strip().replace(" ", "")
     nepTithi = nepOthers[1].text.strip()
