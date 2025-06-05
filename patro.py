@@ -46,7 +46,6 @@ try:
     nepOthers = mediaBox.find_all("p")
     nepSambat = nepOthers[0].text.strip().replace(" ", "")
     nepTithi = nepOthers[1].text.strip()
-
    
     try:
         eventBox = box.find('div', {'class': "todaysEvents"})
@@ -54,7 +53,8 @@ try:
     except Exception as e:
         nepEvent = ""
 
-    sunBox = box.find("div", {"class": "col-12 px-0 mt-2"})
+    sunBox = box.find("div", {"class": "row"})
+
     sunSpans = sunBox.find_all("span")
     sunrise = sunSpans[0].text.strip()
     sunset = sunSpans[1].text.strip()
