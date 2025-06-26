@@ -38,7 +38,7 @@ try:
     # Extract data
     box = soup.find('div', {'class': "contact-box"})
     circleToday = box.find('div', {'class': 'rectangle-circle-today'})
-    nepDate = circleToday.find('h2').text.strip()
+    nepDate = circleToday.find('div').text.strip()
     nepDay = circleToday.find('span').text.strip().replace(" ", "")
 
     mediaBox = box.find('div', {'class': "media-body"})
