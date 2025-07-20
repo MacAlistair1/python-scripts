@@ -40,13 +40,14 @@ try:
     circleToday = box.find('div', {'class': 'rectangle-circle-today'})
     nepDate = circleToday.find('div').text.strip()
     nepDay = circleToday.find('span').text.strip().replace(" ", "")
-
-    mediaBox = box.find('div', {'class': "media-body"})
-    nepYearMonth = mediaBox.find("h1").text.strip()
-    nepOthers = mediaBox.find_all("p")
-    nepSambat = nepOthers[0].text.strip().replace(" ", "")
-    nepTithi = nepOthers[1].text.strip()
-   
+    
+    nepYearMonth = box.find("h1").text.strip()
+    nepOthers = box.find_all("p")
+    nepTithi = nepOthers[0].text.strip()
+    
+    parts = nepYearMonth.split("ने.सं.")
+    nepSambat = "ने.सं. " + parts[1].strip()
+    
     try:
         eventBox = box.find('div', {'class': "todaysEvents"})
         nepEvent = eventBox.text.strip()
