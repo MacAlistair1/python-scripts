@@ -8,6 +8,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 import json
 import os
+import time
 
 
 # Set up Chrome options
@@ -55,10 +56,13 @@ try:
         nepEvent = ""
 
     sunBox = box.find("div", {"class": "row"})
-
-    sunSpans = sunBox.find_all("span")
-    sunrise = sunSpans[0].text.strip()
-    sunset = sunSpans[1].text.strip()
+    
+    sunDivs = sunBox.find_all("div", {"class": "col"})
+    
+    sunDivs = [div.text.strip() for div in sunDivs]
+    
+    sunrise = sunDivs[0]
+    sunset = sunDivs[1]
 
     # Organize data into a dictionary
     data = {
@@ -82,28 +86,29 @@ try:
 
     print("Data successfully written to patro.json")
     
+    time.sleep(2)  # Wait for 2 seconds before scraping events
+    
     # Extract data
     projectList = soup.find('div', {'class': "project-list"})
-    
-    eventTable = projectList.find('table', {'class': 'table table-hover mb-0'})
+
+    eventTable = projectList.find('table')
     
     elements = eventTable.find_all('tr')
     
     data = []
     
-    
     for item in elements:
         
         try:
-            name = item.find_all('td', {'class', 'project-title'})[1].find('div', {'class': 'event-list-name'}).text
-            date = item.find_all('td', {'class', 'project-title'})[1].find('small').text
-            status = item.find('td', {'class', 'project-status'}).find('i', {'class': 'event-list-div'}).text
-            img = item.find('td', {'class', 'project-title'}).find('img').get("src")
-            left = item.find('td', {'class', 'project-status'}).find('small').text
+            name = item.find_all('td')[1].find('div', {'class': 'event-list-name'}).text
+            date = item.find_all('td')[1].find('small').text
+            status = item.find_all('td')[2].find('span', {'class': 'event-list-div'}).text
+            img = item.find_all('td')[0].find('img').get("src")
+            left = item.find_all('td')[2].find('small').text
         except Exception as e:
-            name = item.find_all('td', {'class', 'project-title'})[1].find('div', {'class': 'event-list-name'}).text
-            date = item.find_all('td', {'class', 'project-title'})[1].find('small').text
-            status = item.find('td', {'class', 'project-status'}).find('i', {'class': 'event-list-div'}).text
+            name = item.find_all('td')[1].find('div', {'class': 'event-list-name'}).text
+            date = item.find_all('td')[1].find('small').text
+            status = item.find_all('td')[2].find('span', {'class': 'event-list-div'}).text
             img = "https://nepalipulse.jeevenlamichhane.com.np/assets/NepaliPulse.png"
             left = ""
 

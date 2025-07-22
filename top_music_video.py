@@ -1,5 +1,7 @@
 import requests
 import json
+from datetime import datetime
+import time
 
 
 def fetch_data():
@@ -17,12 +19,20 @@ def extact_info(data):
     markets = []
 
     for item in data:
+        
+        iso_string = item['lastUpdated']  # e.g., "2025-07-21T23:26:02.413+00:00"
+
+        # Parse the ISO 8601 string to a datetime object
+        dt = datetime.fromisoformat(iso_string)
+        # Convert to epoch milliseconds
+        epoch_millis = int(dt.timestamp() * 1000)
+        
         # extract the information    
         markets.append({
             "title": item['title'],
             "videoId": item['videoId'],
             "views":item['views'],
-            'lastUpdate': item['lastUpdated']
+            'lastUpdate': epoch_millis
         })
         
 
