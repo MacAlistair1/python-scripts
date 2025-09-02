@@ -10,7 +10,7 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 def fetch_data():
     try:
-        r = requests.get("http://noc.org.np/retailprice", verify=False)
+        r = requests.get("https://noc.org.np/retailprice", verify=False)
         if r.status_code == 200:
             return r.text
         else:
